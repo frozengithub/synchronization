@@ -1,50 +1,103 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Frozen Synchronization</title>
+		<link href='https://fonts.googleapis.com/css?family=Dancing+Script:700' rel='stylesheet' type='text/css'>
+		<link href="snowflakes.css" rel="stylesheet" type="text/css">
 		<style>
 			body {
-				background-color: #6b92b9;
-				background-image: url('http://i.imgur.com/BiSmXaq.png'), url('http://i.imgur.com/XHuy0NJ.png'), url('http://i.imgur.com/okpRxJU.png');
-				-webkit-animation: snow 20s linear infinite;
-				-moz-animation: snow 20s linear infinite;
-				-ms-animation: snow 20s linear infinite;
-				animation: snow 20s linear infinite;
+				font-family: "Helvetica";
 			}
-			@-webkit-keyframes snow {
-				0% { background-position: 0px 0px, 0px 0px, 0px 0px }
-				50% { background-color: #b4cfe0 }
-				100% {
-					background-position: 500px 1000px, 400px 400px, 300px 300px;
-					background-color: #6b92b9;
-				}
+			h1 {
+				font-family: 'Dancing Script', cursive;
+				text-align: center;
 			}
-			@-moz-keyframes snow {
-				0% { background-position: 0px 0px, 0px 0px, 0px 0px }
-				50% { background-color: #b4cfe0 }
-				100% {
-					background-position: 500px 1000px, 400px 400px, 300px 300px;
-					background-color: #6b92b9;
-				}
+			#content {
+				background-color: white;
+				border-radius: 20px;
+				width: 500px;
+				height: 500px;
+				padding: 10px;
+				margin: 0 auto;
+				text-align: center;
 			}
-			@-ms-keyframes snow {
-				0% { background-position: 0px 0px, 0px 0px, 0px 0px }
-				50% { background-color: #b4cfe0 }
-				100% {
-					background-position: 500px 1000px, 400px 400px, 300px 300px;
-					background-color: #6b92b9;
-				}
+			#content div {
+				display: inline;
 			}
-			@keyframes snow {
-				0% { background-position: 0px 0px, 0px 0px, 0px 0px }
-				50% { background-color: #b4cfe0 }
-				100% {
-					background-position: 500px 1000px, 400px 400px, 300px 300px;
-					background-color: #6b92b9;
-				}
+			#hours, #minutes {
+				font-size: 110%;
+				color: skyblue;
+			}
+			#frozen {
+				width: 500px;
 			}
 		</style>
+		<script>
+			var alreadyChanged = false;
+		
+			document.addEventListener("DOMContentLoaded", function() {
+				setInterval(refresh, 60 * 1000);
+				setInterval(changeDots, 1 * 1000);
+				refresh();
+			});
+			
+			function changeDots() {
+				var dotval = document.getElementById("dots").innerHTML;
+				
+				if (dotval == ".") {
+					dotval = "..";
+				}
+				else if (dotval == "..") {
+					dotval = "...";
+				}
+				else if (dotval == "...") {
+					dotval = ".";
+				}
+				
+				document.getElementById("dots").innerHTML = dotval;
+			}
+			
+			function refresh() {
+				//time: 4:00 UTC
+				var time = new Date();
+				var hours = time.getUTCHours();
+				var minutes = time.getUTCMinutes();
+				
+				if (hours < 4) {
+					hours = 3 - hours;
+					minutes = 60 - minutes;
+					document.getElementById("hours").innerHTML = hours;
+					document.getElementById("minutes").innerHTML = minutes;
+				}
+				
+				else {
+					hours = hours - 4;
+					document.getElementById("hours").innerHTML = hours;
+					document.getElementById("minutes").innerHTML = minutes;
+					
+					if (!alreadyChanged) {
+						alreadyChanged = true;
+						document.getElementById("i2").innerHTML = " minutes into Frozen";
+						document.getElementById("frozen").src="after.jpg";
+					}
+				}
+			}
+		</script>
 	</head>
 	<body>
-		<h1>synchronization</h1>
+		<h1>Frozen: Synchronized Watch</h1>
+		<div id="content">
+			<div id="time">
+				<div id="hours"></div>
+				<div id="i1">hours and</div>
+				<div id="minutes"></div>
+				<div id="i2">minutes until it starts</div>
+				<div id="dots">.</div>
+			</div>
+			<img id="frozen" src="before.png">
+			<p>
+				The viewing is scheduled for 4:00 UTC.
+			</p>
+		</div>
 	</body>
 </html>
