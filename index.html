@@ -16,7 +16,7 @@
 				background-color: white;
 				border-radius: 20px;
 				width: 500px;
-				height: 500px;
+				height: 450px;
 				padding: 10px;
 				margin: 0 auto;
 				text-align: center;
@@ -76,11 +76,17 @@
 					document.getElementById("minutes").innerHTML = minutes;
 					
 					if (!alreadyChanged) {
-						alreadyChanged = true;
-						document.getElementById("i2").innerHTML = " minutes into Frozen";
-						document.getElementById("frozen").src="after.jpg";
+						change();
 					}
 				}
+			}
+			
+			function change() {
+				alreadyChanged = true;
+				document.getElementById("content").style.height = "550px";
+				document.getElementById("info").style.display = "none";
+				document.getElementById("i2").innerHTML = " minutes into Frozen";
+				document.getElementById("frozen").src="after.jpg";
 			}
 		</script>
 	</head>
@@ -95,7 +101,7 @@
 				<div id="dots">.</div>
 			</div>
 			<img id="frozen" src="before.png">
-			<p>
+			<p id="info">
 				The viewing is scheduled for 4:00 UTC.
 			</p>
 		</div>
